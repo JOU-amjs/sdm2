@@ -1,0 +1,16 @@
+.DS_Store
+.hg
+.svn
+.CVS
+.idea
+node_modules/
+jscoverage_lib/
+.nyc_output/
+.rpt2_cache/
+coverage/
+design/
+CHANGELOG.md
+dist/
+yarn.lock
+yarn-error.log
+package-lock.json
