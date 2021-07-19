@@ -10,7 +10,6 @@
 [English Document](./README.md)
 
 ### **Features**
-- 非连续搜索
 - 高性能
 - 多次连续调用性能优化
 - 支持TypeScript
@@ -34,7 +33,7 @@ import { discontinuousMatch } from 'string-discontinuous-match';
 ```
 Browser
 ```html
-<script src="https://unpkg.com/string-discontinuous-match/dist/string-discontinuous-match.umd.js"></script>
+<script src="https://unpkg.com/string-discontinuous-match"></script>
 ```
 
 ### **用法**
@@ -45,7 +44,7 @@ const matchedStrings = [
   'src/views/home.jsx',
   'src/views/about.jsx',
   'src/views/ad.jsx',
-]
+];
 let ret = discontinuousMatch(matchedStrings, 'srchom.X');
 // 返回的结果为
 /* [{
@@ -60,35 +59,73 @@ let ret = discontinuousMatch(matchedStrings, 'srchom.X');
 ret = discontinuousMatch(matchedStrings, 'srchom.X', false);
 // 返回结果为[]
 ```
-在大多数情况下，我们总是会在输入框的“input”事件中搜索一些数据，它将会频繁地执行搜索，因此我们优化了频繁连续调用的性能。您可以将上一次的搜索结果在下一次函数调用时传进去，函数会判断搜索关键字的结尾是否相比上一次只是增加了几个字符，如果是的话，它会从上一次搜索的结束的位置开始继续搜索。
+有时候，你的搜索字符串被包含在对象内例如`{ name: '...' }`，此时你需要将第四个参数指定为`name`即可。
 ```javascript
-let ret = matchedStrings;   // matchedStrings是初始化的被搜索字符串数组
-function eventInputHandler(event) {
-  ret = discontinuousMatch(ret, event.target.value);
-  // 将结果做一些显示处理
-}
+const matchedStrings = [
+  { name: 'src/views/home.jsx' },
+  { name 'src/views/about.jsx' },
+  { name 'src/views/ad.jsx' },
+];
+let ret = discontinuousMatch(matchedStrings, 'srchom.X', 'name');
+// 返回的结果与上面的相同。
+/* [{
+  value: 'src/views/home.jsx',
+  index: 0,
+  position: [[0, 2], [10, 12], 14, 17],
+  lastIndex: 17
+}]
+```
+需要注意的是，如果数组中某个对象的`name`字段不是字符串，函数会忽略此次查找。其实，函数的第四个参数还可以指定更深层的嵌套，如针对`{ data: { name: '...' } }`，我们可以用`data.name`来指定搜索字符串
+
+**高亮你的关键字符**
+
+我们在搜索关键字符时，总是希望高亮匹配到的关键字符，因此我们还提供了一个辅助函数帮助你完成它。
+```javascript
+import { discontinuousMatch, replaceMatchedString } from 'string-discontinuous-match';
+const matchedStrings = [
+  'src/views/home.jsx',
+  'src/views/about.jsx',
+  'src/views/ad.jsx',
+];
+let ret = discontinuousMatch(matchedStrings, 'srchom.X');
+let machedStrs = ret.map(machedItem => {
+  // 将匹配结果项传入这个函数中，它将对多个匹配字符依次调用回调函数
+  return replaceMatchedString(
+    machedItem,
+    matchedStr => `<span class="highlight">${matchedStr}</span>`,
+    false     // 此参数表示是否返回数组，默认为false
+  );
+});
+// matchedStrs为
+/*
+["<span class=\"highlight\">src</span>/views/<span class=\"highlight\">hom</span>e<span class=\"highlight\">.</span>js<span class=\"highlight\">x</span>"]
+*/
+```
+当`replaceMatchedString`第三个参数为true时，上面的匹配项将返回一个数组，这样你可以在react中用`React.createElement`包裹高亮部分。
+```javascript
+[
+  React.createElement('span', { class: 'highlight' }, 'src'),
+  '/views/',
+  React.createElement('span', { class: 'highlight' }, 'hom'),
+  'e',
+  React.createElement('span', { class: 'highlight' }, '.'),
+  'js',
+  React.createElement('span', { class: 'highlight' }, 'x'),
+]
 ```
 
 ### **性能**
 ---
-你不需担心性能问题，我们对此很重视。下面是随机字符串的性能测试结果。
+你不需担心性能问题，我们对此很重视，对于每一个被搜索字符串，它都只会被循环对比一次，因此保证了高性能。下面是随机字符串的性能测试结果。
 
-|  字符串数量  | 单字符串长度  | 忽略大小写  |  是否连续调用 | 性能 |
-|  ----  | ----  | ----  | ----  | ----  |
-| 1000  | 5000 | ✅ | ❌ | 19ms |
-| 1000  | 5000 | ✅ | ✅ | 4ms |
-| 1000  | 5000 | ❌ | ❌ | 16ms |
-| 1000  | 5000 | ❌ | ✅ | 3ms |
-| 5000  | 5000 | ✅ | ❌ | 42ms |
-| 5000  | 5000 | ✅ | ✅ | 14ms |
-| 5000  | 5000 | ❌ | ❌ | 39ms |
-| 5000  | 5000 | ❌ | ✅ | 10ms |
-| 10000  | 5000 | ✅ | ❌ | 101ms |
-| 10000  | 5000 | ✅ | ✅ | 29ms |
-| 10000  | 5000 | ❌ | ❌ | 84ms |
-| 10000  | 5000 | ❌ | ✅ | 19ms |
-
-您可以看到，它在大数组搜索中的性能非常好，在多次连续调用时，性能提高了约4倍。
+|  字符串数量  | 单字符串长度  | 忽大小写 | 性能 |
+|  ----  | ----  | ----  | ----  |
+| 1000  | 5000 | ✅ | 19ms |
+| 1000  | 5000 | ❌ | 16ms |
+| 5000  | 5000 | ✅ | 42ms |
+| 5000  | 5000 | ❌ | 39ms |
+| 10000  | 5000 | ✅ | 101ms |
+| 10000  | 5000 | ❌ | 84ms |
 
 ### LICENSE MIT
 Copyright (c) 2021 JOU. Copyright of the Typescript bindings are respective of each contributor listed in the definition file.

@@ -1,7 +1,7 @@
 /*
  * @Date: 2020-04-09 11:06:01
  * @LastEditors: JOU(wx: huzhen555)
- * @LastEditTime: 2021-07-16 18:11:57
+ * @LastEditTime: 2021-07-19 12:38:52
  */
 var typescript = require('rollup-plugin-typescript2');
 
@@ -28,6 +28,6 @@ function getCompiler(opt) {
   return typescript(opt);
 }
 
-exports.name = 'SuperInspector';
+exports.name = 'stringDiscontinuousMatch';
 exports.banner = banner;
 exports.getCompiler = getCompiler;
