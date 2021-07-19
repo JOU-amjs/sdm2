@@ -119,6 +119,8 @@ When the third parameter of function `replacematchedstring` is true, the above m
 ---
 You don't need to worry about the performance, we attach great importance to it. For each searched string, it will only be compared circularly once, so high performance is guaranteed. Here are the performance test results for random strings.
 
+The key string is a 50 random string.
+
 |  Numbers of strings  |  Per string length  |  Ignore case | performance |
 |  ----  | ----  | ----  | ----  |
 | 1000  | 5000 | ✅ | 19ms |
