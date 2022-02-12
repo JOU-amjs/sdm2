@@ -9,7 +9,7 @@
 
 [English Document](./README.md)
 
-### **Features**
+### **特性**
 - 高性能
 - 多次连续调用性能优化
 - 支持TypeScript
