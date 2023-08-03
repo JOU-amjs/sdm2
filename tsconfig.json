@@ -1,14 +1,14 @@
 {
 	"compilerOptions": {
 		"resolveJsonModule": true,
-		"target": "es2018",
+		"target": "ES5",
 		"module": "commonjs",
 		"strict": true,
 		"noImplicitAny": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"noEmitOnError": false,
-		"noUnusedLocals": true,
+		"noUnusedLocals": false,
 		"noUnusedParameters": false,
 		"allowUnreachableCode": false,
 		"allowUnusedLabels": false,
@@ -19,8 +19,7 @@
 		"inlineSourceMap": false,
 		"importHelpers": true,
 		"removeComments": true,
-		"esModuleInterop": true,
-		"allowJs": true
+		"esModuleInterop": true
 	},
 	"paths": {
 		"@/*": ["src/*"],

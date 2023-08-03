@@ -1,19 +1,19 @@
 /*
  * @Date: 2020-04-09 11:06:01
  * @LastEditors: JOU(wx: huzhen555)
- * @LastEditTime: 2023-05-08 23:00:03
+ * @LastEditTime: 2023-08-03 22:25:02
  */
 var typescript = require('rollup-plugin-typescript2');
 const getCompiler = (
-	opt = {
-		// objectHashIgnoreUnknownHack: true,
-		// clean: true,
-		tsconfigOverride: {
-			compilerOptions: {
-				module: 'ES2015'
-			}
-		}
-	}
+  opt = {
+    // objectHashIgnoreUnknownHack: true,
+    // clean: true,
+    tsconfigOverride: {
+      compilerOptions: {
+        module: 'ES2015'
+      }
+    }
+  }
 ) => typescript(opt);
 exports.getCompiler = getCompiler;
 
@@ -29,8 +29,8 @@ exports.banner = `/**
 `;
 
 const compilePath = (exports.compilePath = {
-	packageName: 'sdm',
-	input: 'src/index.ts',
-	output: suffix => `dist/sdm.${suffix}.js`
+  packageName: 'sdm',
+  input: 'src/index.ts',
+  output: suffix => `dist/sdm.${suffix}.js`
 });
-exports.external = compilePath.external;
+exports.external = compilePath.external || [];
