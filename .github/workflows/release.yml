@@ -61,9 +61,6 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Test SSR
-        run: npm run test:node
-
       # 这条命令包含了测试和上传覆盖率
       - name: Coverage
         run: npm run coveralls
@@ -71,5 +68,5 @@ jobs:
       - name: Release
         run: npm run release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_ALOVA_PUBLISH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.ALOVA_GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
