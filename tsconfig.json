@@ -1,38 +1,31 @@
 {
-  "compilerOptions": {
-    "resolveJsonModule": true,
-    "target": "ES5",
-    "module": "commonjs",
-    "strict": true,
-    "noImplicitAny": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "charset": "utf8",
-    "noEmitOnError": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "strictPropertyInitialization": false,
-    "noFallthroughCasesInSwitch": false,
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": false,
-    "inlineSourceMap": false,
-    "importHelpers": true,
-    "removeComments": true,
-    "esModuleInterop": true
-  },
-  "paths": {
-    "@/*": [
-      "src/*"
-    ]
-  },
-  "include": [
-    "src/**/*.ts",
-    "typings/*.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "**.d.ts"
-  ]
+	"compilerOptions": {
+		"resolveJsonModule": true,
+		"target": "es2018",
+		"module": "commonjs",
+		"strict": true,
+		"noImplicitAny": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"noEmitOnError": false,
+		"noUnusedLocals": true,
+		"noUnusedParameters": false,
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"strictPropertyInitialization": false,
+		"noFallthroughCasesInSwitch": false,
+		"skipLibCheck": true,
+		"skipDefaultLibCheck": false,
+		"inlineSourceMap": false,
+		"importHelpers": true,
+		"removeComments": true,
+		"esModuleInterop": true,
+		"allowJs": true
+	},
+	"paths": {
+		"@/*": ["src/*"],
+		"#/*": ["test/*"]
+	},
+	"include": ["src/**/*.ts", "typings/*.d.ts", "test/**/*.ts"],
+	"exclude": ["node_modules", "**.d.ts"]
 }
