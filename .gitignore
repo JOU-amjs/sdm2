@@ -1,17 +1,19 @@
+# dependencies
+/node_modules
+/coverage
+
+# production
+
+# misc
 .DS_Store
-.hg
-.svn
-.CVS
 .idea
-node_modules/
-jscoverage_lib/
-.nyc_output/
-.rpt2_cache/
-coverage/
-design/
-CHANGELOG.md
-dist/
-yarn.lock
-yarn-error.log
-package-lock.json
-.coveralls.yml
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Optional eslint cache
+.eslintcache
+/demo
+/design
+dist

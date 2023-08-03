@@ -1,44 +1,77 @@
-import { MatchedPosition } from '../../typings';
-import { convertIndex } from './helper';
+import { MatchedPosition, MatchingConfig } from '../../typings';
+import { isFn, isString, myAssert } from './helper';
+
+const convertIndex = ([start, end]: number[]): MatchedPosition =>
+	start === end ? start : ([start, end] as [number, number]);
 
 /**
  * @description: 非连续地匹配字符串
- * @author: JOU(wx: huzhen555)
- * @param {string} string 
- * @param {string} matching
- * @param {MatchedPosition} matchIndexes 保存当前文本的全部匹配索引
- * @param {number} matchItemIndexes 保存当次查找的匹配索引
- * @param {*} lastIndex 上次匹配的索引
- * @return {*}
+ * @param origin 原始匹配数据
+ * @param matcher 匹配字符串
+ * @param config 匹配相关配置
+ * @return 匹配结果，未匹配到返回的数据为空数组
  */
-export default function matchWithString(string: string, matching: string, matchIndexes: MatchedPosition[] = [], matchItemIndexes: number[] = [], lastIndex = -1) {
-  // 对每个搜索字符单独查找
-  for (let j = 0; j < matching.length; j++) {
-    let index = string.indexOf(matching.charAt(j), lastIndex + 1);		// 查找时需从上一个查找结果后开始
-    if (index >= 0) {
-      if (matchItemIndexes.length === 0) {
-        matchItemIndexes = [index, index];
-      }
-      else {
-        if (index === matchItemIndexes[1] + 1) {
-          matchItemIndexes[1] += 1;
-        }
-        else {
-          matchIndexes.push(convertIndex(matchItemIndexes));
-          matchItemIndexes = [index, index];
-        }
-      }
-      lastIndex = index;
-    }
-    else {
-      // 如果中途有某个字符没匹配，则表示不匹配此字符串，直接进行下一个字符串匹配，否则会导致顺序错乱
-      matchItemIndexes = [];
-      matchIndexes = [];
-      break;
-    }
-  }
-  if (matchItemIndexes.length > 0) {
-    matchIndexes.push(convertIndex(matchItemIndexes));
-  }
-  return { matchIndexes, lastIndex };
+export default function matchWithString<T extends string | Record<any, any>>(
+	origin: T,
+	matcher: string,
+	{ ignoreCase, matchStr, onMatched }: MatchingConfig<T>
+) {
+	const newStr = isFn(matchStr) ? matchStr(origin) : origin;
+	myAssert(isString(newStr), `${newStr} is not a string`);
+
+	const isOnMatchedFn = isFn(onMatched);
+	let position = [] as MatchedPosition[],
+		matchedRange: number[] = [],
+		lastIndex = -1,
+		indexes: number[] = [],
+		matchingStr = newStr as string,
+		// 如果不需要转换匹配字符串则默认为被查找的字符串，否则会通过appendTransformedStr一步步追加内容上去
+		transformedStr = isOnMatchedFn ? '' : matchingStr;
+	if (ignoreCase) {
+		matchingStr = matchingStr.toLowerCase();
+		matcher = matcher.toLowerCase();
+	}
+
+	let splitedStartIndex = 0;
+	const appendTransformedStr = () => {
+		// 替换匹配的字符串
+		if (isOnMatchedFn) {
+			const [startIndex, endIndex] = matchedRange;
+
+			// 截取初始字符串
+			transformedStr += newStr.substring(splitedStartIndex, startIndex);
+			transformedStr += onMatched(newStr.substring(startIndex, endIndex + 1), origin);
+			splitedStartIndex = endIndex + 1;
+		}
+	};
+
+	// 对每个搜索字符单独查找
+	for (let i = 0; i < matcher.length; i++) {
+		const index = matchingStr.indexOf(matcher[i], lastIndex + 1); // 查找时需从上一个查找结果后开始
+		if (index >= 0) {
+			indexes.push(index);
+			if (matchedRange.length === 0) {
+				matchedRange = [index, index];
+			} else {
+				if (index === matchedRange[1] + 1) {
+					matchedRange[1] += 1;
+				} else {
+					appendTransformedStr();
+					position.push(convertIndex(matchedRange));
+					matchedRange = [index, index];
+				}
+			}
+			lastIndex = index;
+		} else {
+			// 如果中途有某个字符没匹配，则表示不匹配此字符串，直接进行下一个字符串匹配，否则会导致顺序错乱
+			matchedRange = position = indexes = [];
+			break;
+		}
+	}
+	if (matchedRange.length > 0) {
+		appendTransformedStr();
+		isOnMatchedFn && (transformedStr += newStr.substring(matchedRange[1] + 1)); // 将末尾的字符串补充上去
+		position.push(convertIndex(matchedRange));
+	}
+	return { position, indexes, transformedStr };
 }

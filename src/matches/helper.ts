@@ -1,4 +1,24 @@
-import { MatchedPosition } from '../../typings';
+/**
+ * 断言表达式
+ * @param expression 表达式
+ * @param msg 错误信息
+ */
+export const myAssert = (expression: boolean, msg: string) => {
+	if (!expression) {
+		throw new Error(msg);
+	}
+};
 
-export const convertIndex = ([start, end]: number[]) => start === end ? start : ([start, end] as [number, number]);
-export const createIndex = (index: MatchedPosition) => typeof index === 'number' ? [index, index] : index;
+/**
+ * 判断参数是否为字符串
+ * @param arg 任意参数
+ * @returns 该参数是否为字符串
+ */
+export const isString = (arg: any): arg is string => typeof arg === 'string';
+
+/**
+ * 判断参数是否为函数
+ * @param arg 任意参数
+ * @returns 该参数是否为函数
+ */
+export const isFn = (arg: any): arg is (...args: any[]) => any => typeof arg === 'function';
