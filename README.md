@@ -2,7 +2,7 @@
    <img width="200px" src="https://github.com/JOU-amjs/sdm2/assets/29848971/0eb41c8d-7021-4128-bba8-13ad08e6c696" />
 </p>
 
-<p align="center"><b>A high-performance string non-continuous search function library</b></p>
+<p align="center"><b>A high-performance string discontinuous search function library</b></p>
 
 <p align="center">English | <a href="./README.zh-CN.md">📑中文</a></p>
 
@@ -14,7 +14,7 @@
 
 ## 🚀 Features
 
-- Simple to use
+- easy to use
 - high performance
 - less than 1kb
 - Support TypeScript
@@ -47,26 +47,56 @@ Browser
 
 ## Usage
 
-Maybe you will use it in path search, tree control option search, checkbox item search, or some other non-contiguous string search of local data, it can satisfy you, please see the example below.
+If you use it in path search, tree control option search, checkbox item search, or other discontiguous string match of local data, it can satisfy you, please see the example below.
 
 ### match string
 
 ```javascript
 const ret = match('src/views/home.jsx', 'shojsx');
-/* ret = {
+/* ret => {
    origin: 'src/views/home.jsx',
    str: 'src/views/home.jsx',
+   strArr: ['src/views/home.jsx'],
    position: [0, [10, 11], [15, 17]],
    indexes: [0, 10, 11, 15, 16, 17]
 }
 */
 
 // return null if not matched
-const ret = match('src/views/home.jsx', 'bbha');
-// ret = null
+const ret = match('src/views/home.jsx', 'ZZZZ');
+// ret => null
 ```
 
-### filter array
+**Return Field Explanation**
+| field name | description |
+| ---- | ---- |
+| origin | The string to be searched, the original value of the first parameter of `match` function |
+| str | The string transformed by `onMatched` after matching keywords, if `onMatched` is not specified, its value is the same as origin |
+| strArr | An array of matched strings and unmatched strings, if `onMatched` is specified, the matched part is the transformed value of `onMatched` |
+| position | The position of matched keyword. If multiple keywords are matched consecutively, it will be represented by `[startIndex, endIndex]` |
+| indexes | The position of the matched keyword in the searched string, different from `position`, even if multiple keywords are matched consecutively, they will be listed one by one |
+
+### Match nested string
+
+If the string being match is nested within an object, `matchStr` can be used to return the string being matched for.
+
+```javascript
+const ret = match({ name: 'src/views/home.jsx' }, 'shojsx', {
+	matchStr: obj => obj.name
+});
+/* ret => {
+   origin: { name: 'src/views/home.jsx' },
+   str: 'src/views/home.jsx',
+   strArr: ['src/views/home.jsx'],
+   position: [0, [10, 11], [15, 17]],
+   indexes: [0, 10, 11, 15, 16, 17]
+}
+*/
+```
+
+### Filter array
+
+Filter an array with unmatched values of `null`.
 
 ```javascript
 const matchedStrings = [
@@ -75,64 +105,85 @@ const matchedStrings = [
    'src/views/ad.jsx',
 ];
 const ret = matchedStrings. filter(strItem => match(strItem, 'srchom. X', { ignoreCase: true });
-/* ret = ['src/views/home.jsx'] */
-```
-
-### Match the string inside the object
-
-Sometimes, your search string is contained in an object such as `{ name: '...' }`, then you need to specify the fourth parameter as `name`.
-
-```javascript
-const ret = match({ name: 'src/views/home.jsx' }, 'shojsx', {
-	matchStr: obj => obj.name
-});
-/* ret = {
-   origin: { name: 'src/views/home.jsx' },
-   str: 'src/views/home.jsx',
-   position: [0, [10, 11], [15, 17]],
-   indexes: [0, 10, 11, 15, 16, 17]
-}
-*/
+/* ret => ['src/views/home.jsx'] */
 ```
 
 ### Highlight matched characters
 
-When we search for key characters, we always want to highlight the matching key characters, so we also provide a helper function to help you do it.
+Use the `onMatched` function to transform the matching string, and the matched keywords can be highlighted.
+
+`onMatched` will be emit every time when a part of keywords are matched, and its parameters are the matched keywords and the original value of this match.
 
 ```javascript
 import { match } from 'sdm2';
 const ret = match('src/views/home.jsx', 'shojsx', {
-	onMatched: (matchedStr, originStr) => `<span class="highlight">${matchedStr}</span>`
+	onMatched: (matchedStr, origin) => `<span class="highlight">${matchedStr}</span>`
 });
-/* ret = {
+/* ret => {
    origin: 'src/views/home.jsx',
    str: '<span class="highlight">s</span>rc/views/<span class="highlight">ho</span>me.<span class="highlight">jsx</span>',
+   strArr: [
+     '<span class="highlight">s</span>',
+     'rc/views/',
+     '<span class="highlight">ho</span>',
+     'me.',
+     '<span class="highlight">jsx</span>'
+   ],
    position: [0, [10, 11], [15, 17]],
    indexes: [0, 10, 11, 15, 16, 17]
 }
 */
 ```
 
-### Batch filter and highlight matched characters
+### Filter array and highlight matched characters
 
-If it is an array of strings, we can use `filterMap` to filter and convert strings at the same time.
+If you want to filter an string array, you can use `filterMap` to filter and transform strings at the same time. `filterMap` will first filter the items that matched keywords, and then call `onMap` by `array.map` to transform the matched items.
 
 ```javascript
 import { filterMap } from 'sdm2';
 
 const matchedStrings = ['src/views/home.jsx', 'src/views/about.jsx', 'src/views/ad.jsx'];
-const ret = filterMap(matchedStrings, 'shojsx', (matchedInfo, index) => matchedInfo.str, {
-	onMatched: (matchedStr, originStr) => `<span class="highlight">${matchedStr}</span>`
+const ret = filterMap(matchedStrings, 'shojsx', {
+	onMatched: (matchedStr, originStr) => `<span class="highlight">${matchedStr}</span>`,
+	onMap: (matchedInfo, index) => matchedInfo.str
 });
-/* ret = ['<span class="highlight">s</span>rc/views/<span class="highlight">ho</span>me.<span class="highlight">jsx</span >']
+/* ret => ['<span class="highlight">s</span>rc/views/<span class="highlight">ho</span>me.<span class="highlight">jsx</ span>']
  */
+```
+
+**jsx syntax highlighting**
+
+Maybe you don't like to use `dangerouslySetInnerHTML`(react) or `v-html`(vue) to highlight keywords, in jsx, you can also return the virtual dom in `onMatched`, and return the splited array in `onMap`, which is more in line with the habits of UI framework.
+
+```jsx
+const ret = filterMap(matchedStrings, 'shojsx', {
+onMatched: (matchedStr, originStr) => <span class="highlight">${matchedStr}</span>,
+onMap: (matchedInfo, index) => matchedInfo.strArr
+});
+
+/* ret => [
+   VNode {
+     class: 'highlight',
+     children: 's'
+   },
+   'rc/views/',
+   VNode {
+     class: 'highlight',
+     children: 'ho'
+   },
+   'me.',
+   VNode {
+     class: 'highlight',
+     children: 'jsx'
+   }
+]
 ```
 
 ## Performance
 
 ---
 
-You don't need to worry about performance issues, we take this very seriously, for each searched string, it will only be compared once, thus ensuring high performance. Below are performance test results for random strings.
+You don't worry about the performance, each searched string will be only compared once, thus ensuring high performance. Below are performance test results for random strings.
 
 The key string is a 50-digit random string
 | Number of strings | Single string length | Ignoring case | Performance |
@@ -144,7 +195,7 @@ The key string is a 50-digit random string
 | 10000 | 5000 | ✅ | 101ms |
 | 10000 | 5000 | ❌ | 84ms |
 
-## welcome to submit questions
+## Welcome to submit issues
 
 If you encounter difficulties when using sdm2, whether it is a bug or a new function, you can [click here to submit](https://github.com/JOU-amjs/sdm2/issues)
 

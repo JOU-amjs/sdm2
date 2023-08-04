@@ -2,6 +2,7 @@ type MatchedPosition = [number, number] | number;
 interface Matched<T> {
 	origin: T;
 	str: string;
+	strArr: string[];
 	position: MatchedPosition[];
 	indexes: number[];
 }
@@ -9,7 +10,7 @@ interface Matched<T> {
 interface MatchingConfig<T> {
 	ignoreCase?: boolean;
 	matchStr?: (origin: T) => string;
-	onMatched?: (matchedStr: string, origin: T) => string;
+	onMatched?: (matchedStr: string, origin: T) => any;
 }
 
 export function match<T extends string | Record<any, any>>(
@@ -18,9 +19,11 @@ export function match<T extends string | Record<any, any>>(
 	config?: MatchingConfig<T>
 ): Matched | null;
 
+interface FilterMapMatchingConfig<T, R> extends MatchingConfig<T> {
+	onMap: (value: Matched, index: number) => R;
+}
 export function filterMap<T extends string | Record<any, any>, R>(
 	array: T[],
 	matching: string,
-	callback: (value: Matched, index: number) => R,
-	config?: MatchingConfig<T>
+	config: FilterMapMatchingConfig<T, R>
 ): R[];
