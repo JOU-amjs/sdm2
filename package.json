@@ -1,12 +1,12 @@
 {
-	"name": "sdm",
+	"name": "sdm2",
 	"version": "1.0.0",
 	"description": "A high performance librray to match discontinuous strings",
-	"main": "dist/sdm.js",
+	"main": "dist/sdm2.js",
 	"types": "typings/index.d.ts",
-	"module": "dist/sdm.esm.js",
-	"unpkg": "dist/sdm.umd.js",
-	"jsdelivr": "dist/sdm.umd.js",
+	"module": "dist/sdm2.esm.js",
+	"unpkg": "dist/sdm2.umd.js",
+	"jsdelivr": "dist/sdm2.umd.js",
 	"type": "module",
 	"scripts": {
 		"clean": "rimraf ./dist",
@@ -21,17 +21,18 @@
 		"build": "npm run clean && npm run build:esm && npm run build:umd && npm run build:umd.min",
 		"coveralls": "npm run test:coverage && coveralls < coverage/lcov.info",
 		"generate": "node generate-test-data.js 1000",
+		"aa": "cross-env VERSION=1.1.2 npm run build",
 		"commit": "git-cz && git push"
 	},
 	"author": "JOU-amjs",
 	"license": "MIT",
-	"homepage": "https://github.com/JOU-amjs/sdm#readme",
+	"homepage": "https://github.com/JOU-amjs/sdm2#readme",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/JOU-amjs/sdm.git"
+		"url": "git://github.com/JOU-amjs/sdm2.git"
 	},
 	"bugs": {
-		"url": "https://github.com/JOU-amjs/sdm/issues"
+		"url": "https://github.com/JOU-amjs/sdm2/issues"
 	},
 	"files": [
 		"/dist",
@@ -42,6 +43,7 @@
 		"match",
 		"strings search",
 		"string match",
+		"string discontinuous match",
 		"discontinuous match",
 		"search",
 		"discontinuous search"

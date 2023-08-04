@@ -14,7 +14,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: sdm Version
+      label: sdm2 Version
       description: Please fill in the version actually installed in node_modules/@alova/adapter-uniapp/package.json
       placeholder: E.g. 1.4.0
     validations:

@@ -1,8 +1,8 @@
-# [sdm](https://github.com/JOU-amjs/msd)
+# [sdm2](https://github.com/JOU-amjs/msd)
 
-[![npm](https://img.shields.io/npm/v/sdm)](https://www.npmjs.com/package/sdm)
-![size](https://img.shields.io/bundlephobia/min/sdm)
-[![Coverage Status](https://coveralls.io/repos/github/JOU-amjs/sdm/badge.svg)](https://coveralls.io/github/JOU-amjs/sdm)
+[![npm](https://img.shields.io/npm/v/sdm2)](https://www.npmjs.com/package/sdm2)
+![size](https://img.shields.io/bundlephobia/min/sdm2)
+[![Coverage Status](https://coveralls.io/repos/github/JOU-amjs/sdm2/badge.svg)](https://coveralls.io/github/JOU-amjs/sdm2)
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
@@ -20,26 +20,26 @@
 
 ```bash
 # via npm
-npm install sdm
+npm install sdm2
 
 #via yarn
-yarn add sdm
+yarn add sdm2
 ```
 
 Introduced in `Node.js`, `esModule`, `Browser`
 
 ```javascript
 // commonjs(Node.js)
-var { match, filterMap } = require('sdm').default;
+var { match, filterMap } = require('sdm2').default;
 
 // esModule
-import { match, filterMap } from 'sdm';
+import { match, filterMap } from 'sdm2';
 ```
 
 Browser
 
 ```html
-<script src="https://unpkg.com/sdm"></script>
+<script src="https://unpkg.com/sdm2"></script>
 ```
 
 ## **Usage**
@@ -97,7 +97,7 @@ const ret = match({ name: 'src/views/home.jsx' }, 'shojsx', {
 When we search for key characters, we always want to highlight the matching key characters, so we also provide a helper function to help you do it.
 
 ```javascript
-import { match } from 'sdm';
+import { match } from 'sdm2';
 const ret = match('src/views/home.jsx', 'shojsx', {
 	onMatched: (matchedStr, originStr) => `<span class="highlight">${matchedStr}</span>`
 });
@@ -115,7 +115,7 @@ const ret = match('src/views/home.jsx', 'shojsx', {
 If it is an array of strings, we can use `filterMap` to filter and convert strings at the same time.
 
 ```javascript
-import { filterMap } from 'sdm';
+import { filterMap } from 'sdm2';
 
 const matchedStrings = ['src/views/home.jsx', 'src/views/about.jsx', 'src/views/ad.jsx'];
 const ret = filterMap(matchedStrings, 'shojsx', (matchedInfo, index) => matchedInfo.str, {
@@ -143,7 +143,7 @@ The key string is a 50-digit random string
 
 ## **SUBMIT A QUESTION**
 
-- [Click here to submit](https://github.com/JOU-amjs/sdm/issues)
+- [Click here to submit](https://github.com/JOU-amjs/sdm2/issues)
 
 ## LICENSE MIT
 
