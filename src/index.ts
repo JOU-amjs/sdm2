@@ -1,4 +1,4 @@
-import { Matched, MatchingConfig } from '../typings';
+import { FilterMapMatchingConfig, MatchingConfig } from '../typings';
 import { isString, myAssert } from './matches/helper';
 import matchWithString from './matches/matchWithString';
 
@@ -16,14 +16,12 @@ export function match<T extends string | Record<any, any>>(
 	config: MatchingConfig<T> = {}
 ) {
 	myAssert(isString(matcher), 'matcher is not a string');
-	const { position, indexes, transformedStr } = matchWithString(originalStr, matcher, config);
-	return position.length
-		? ({
+	const matched = matchWithString(originalStr, matcher, config);
+	return matched.position.length
+		? {
 				origin: originalStr,
-				str: transformedStr,
-				position,
-				indexes
-		  } as Matched<T>)
+				...matched
+		  }
 		: null;
 }
 
@@ -38,16 +36,13 @@ export function match<T extends string | Record<any, any>>(
 export const filterMap = <T extends string | Record<any, any>, R>(
 	array: T[],
 	matcher: string,
-	callback: (value: Matched<T>, index: number) => R,
-	config?: MatchingConfig<T>
+	config: FilterMapMatchingConfig<T, R>
 ) => {
 	const newArray = [] as R[];
 	let index = 0;
 	array.forEach(item => {
 		const res = match(item, matcher, config);
-		if (res) {
-			newArray.push(callback(res, index++));
-		}
+		res && newArray.push(config.onMap(res, index++));
 	});
 	return newArray;
 };

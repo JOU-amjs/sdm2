@@ -14,7 +14,7 @@
 
 ## 🚀 特性
 
-- 使用简单
+- 易于使用
 - 高性能
 - 小于 1kb
 - 支持 TypeScript
@@ -53,20 +53,50 @@ Browser
 
 ```javascript
 const ret = match('src/views/home.jsx', 'shojsx');
-/* ret = {
+/* ret => {
   origin: 'src/views/home.jsx',
   str: 'src/views/home.jsx',
+  strArr: ['src/views/home.jsx'],
   position: [0, [10, 11], [15, 17]],
   indexes: [0, 10, 11, 15, 16, 17]
 }
 */
 
 // 未匹配则返回null
-const ret = match('src/views/home.jsx', 'bbha');
-// ret = null
+const ret = match('src/views/home.jsx', 'ZZZZ');
+// ret => null
 ```
 
-### 过滤数组
+**返回字段解释**
+| 字段名 | 描述 |
+| ---- | ---- |
+| origin | 被查找字符串，match 函数的第一个参数原始值 |
+| str | 匹配关键字后通过`onMatched`转换后的字符串，如果未指定`onMatched`，它的值和 origin 相同 |
+| strArr | 关键字已匹配字符串与未匹配字符串的切分数组，如果指定了`onMatched`，匹配部分为`onMatched`转换后的值 |
+| position | 匹配的关键字所在被查找字符串的位置，如果连续匹配到多个关键字，会通过`[startIndex, endIndex]`表示 |
+| indexes | 匹配的关键字所在被查找字符串的位置，与`position`不同的是，即使连续匹配到多个关键字也会一一列出 |
+
+### 匹配嵌套的字符串
+
+如果被查找的字符串嵌套在对象内，可以使用`matchStr`返回被查找的字符串。
+
+```javascript
+const ret = match({ name: 'src/views/home.jsx' }, 'shojsx', {
+	matchStr: obj => obj.name
+});
+/* ret => {
+  origin: { name: 'src/views/home.jsx' },
+  str: 'src/views/home.jsx',
+  strArr: ['src/views/home.jsx'],
+  position: [0, [10, 11], [15, 17]],
+  indexes: [0, 10, 11, 15, 16, 17]
+}
+*/
+```
+
+### 数组过滤
+
+利用未匹配值为 `null` 过滤数组。
 
 ```javascript
 const matchedStrings = [
@@ -75,64 +105,85 @@ const matchedStrings = [
   'src/views/ad.jsx',
 ];
 const ret = matchedStrings.filter(strItem => match(strItem, 'srchom.X', { ignoreCase: true });
-/* ret = ['src/views/home.jsx'] */
-```
-
-### 匹配对象内的字符串
-
-有时候，你的搜索字符串被包含在对象内例如`{ name: '...' }`，此时你需要将第四个参数指定为`name`即可。
-
-```javascript
-const ret = match({ name: 'src/views/home.jsx' }, 'shojsx', {
-	matchStr: obj => obj.name
-});
-/* ret = {
-  origin: { name: 'src/views/home.jsx' },
-  str: 'src/views/home.jsx',
-  position: [0, [10, 11], [15, 17]],
-  indexes: [0, 10, 11, 15, 16, 17]
-}
-*/
+/* ret => ['src/views/home.jsx'] */
 ```
 
 ### 高亮已匹配字符
 
-我们在搜索关键字符时，总是希望高亮匹配到的关键字符，因此我们还提供了一个辅助函数帮助你完成它。
+使用`onMatched`函数转换匹配字符串，可以高亮匹配到的关键字。
+
+`onMatched`会在每次匹配到一部分关键字时触发，它的参数分别为匹配的关键字和查找的原始值。
 
 ```javascript
 import { match } from 'sdm2';
 const ret = match('src/views/home.jsx', 'shojsx', {
-	onMatched: (matchedStr, originStr) => `<span class="highlight">${matchedStr}</span>`
+	onMatched: (matchedStr, origin) => `<span class="highlight">${matchedStr}</span>`
 });
-/* ret = {
+/* ret => {
   origin: 'src/views/home.jsx',
   str: '<span class="highlight">s</span>rc/views/<span class="highlight">ho</span>me.<span class="highlight">jsx</span>',
+  strArr: [
+    '<span class="highlight">s</span>',
+    'rc/views/',
+    '<span class="highlight">ho</span>',
+    'me.',
+    '<span class="highlight">jsx</span>'
+  ],
   position: [0, [10, 11], [15, 17]],
   indexes: [0, 10, 11, 15, 16, 17]
 }
 */
 ```
 
-### 批量过滤并高亮已匹配字符
+### 过滤数组并高亮已匹配字符
 
-如果对于字符串数组，我们可以使用`filterMap`同时进行过滤和转换字符串。
+如果对于字符串数组，我们可以使用`filterMap`同时进行过滤和转换字符串。`filterMap`将会先过滤出符合查找关键字的项，再调用`onMap`转换已匹配项
 
 ```javascript
 import { filterMap } from 'sdm2';
 
 const matchedStrings = ['src/views/home.jsx', 'src/views/about.jsx', 'src/views/ad.jsx'];
-const ret = filterMap(matchedStrings, 'shojsx', (matchedInfo, index) => matchedInfo.str, {
-	onMatched: (matchedStr, originStr) => `<span class="highlight">${matchedStr}</span>`
+const ret = filterMap(matchedStrings, 'shojsx', {
+	onMatched: (matchedStr, originStr) => `<span class="highlight">${matchedStr}</span>`,
+	onMap: (matchedInfo, index) => matchedInfo.str
 });
-/* ret = ['<span class="highlight">s</span>rc/views/<span class="highlight">ho</span>me.<span class="highlight">jsx</span>']
+/* ret => ['<span class="highlight">s</span>rc/views/<span class="highlight">ho</span>me.<span class="highlight">jsx</span>']
  */
+```
+
+**jsx 语法高亮**
+
+可能你不喜欢使用`dangerouslySetInnerHTML`(react)或`v-html`(vue)来高亮关键字，在 jsx 中，你还可以在`onMatched`中返回虚拟 dom，并在`onMap`中返回已经切分好的数组，这更符合 UI 框架的使用习惯：
+
+```jsx
+const ret = filterMap(matchedStrings, 'shojsx', {
+	onMatched: (matchedStr, originStr) => <span class="highlight">${matchedStr}</span>,
+	onMap: (matchedInfo, index) => matchedInfo.strArr
+});
+
+/* ret => [
+  VNode {
+    class: 'highlight',
+    children: 's'
+  },
+  'rc/views/',
+  VNode {
+    class: 'highlight',
+    children: 'ho'
+  },
+  'me.',
+  VNode {
+    class: 'highlight',
+    children: 'jsx'
+  }
+]
 ```
 
 ## 性能
 
 ---
 
-你不需担心性能问题，我们对此很重视，对于每一个被搜索字符串，它都只会被循环对比一次，因此保证了高性能。下面是随机字符串的性能测试结果。
+你不需担心性能问题，每一个被搜索字符串都只会被对比一次，因此保证了高性能。下面是随机字符串的性能测试结果。
 
 关键字符串为 50 位随机字符串
 | 字符串数量 | 单字符串长度 | 忽大小写 | 性能 |

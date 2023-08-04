@@ -27,6 +27,7 @@ export default function matchWithString<T extends string | Record<any, any>>(
 		matchingStr = newStr as string,
 		// 如果不需要转换匹配字符串则默认为被查找的字符串，否则会通过appendTransformedStr一步步追加内容上去
 		transformedStr = isOnMatchedFn ? '' : matchingStr;
+	const strArr = isOnMatchedFn ? [] : [matchingStr];
 	if (ignoreCase) {
 		matchingStr = matchingStr.toLowerCase();
 		matcher = matcher.toLowerCase();
@@ -36,11 +37,14 @@ export default function matchWithString<T extends string | Record<any, any>>(
 	const appendTransformedStr = () => {
 		// 替换匹配的字符串
 		if (isOnMatchedFn) {
-			const [startIndex, endIndex] = matchedRange;
+			const [startIndex, endIndex] = matchedRange,
+				notMatchSnippet = newStr.substring(splitedStartIndex, startIndex),
+				matchedSnippet = onMatched(newStr.substring(startIndex, endIndex + 1), origin);
 
 			// 截取初始字符串
-			transformedStr += newStr.substring(splitedStartIndex, startIndex);
-			transformedStr += onMatched(newStr.substring(startIndex, endIndex + 1), origin);
+			transformedStr += notMatchSnippet;
+			transformedStr += matchedSnippet;
+			strArr.push(notMatchSnippet, matchedSnippet);
 			splitedStartIndex = endIndex + 1;
 		}
 	};
@@ -70,8 +74,18 @@ export default function matchWithString<T extends string | Record<any, any>>(
 	}
 	if (matchedRange.length > 0) {
 		appendTransformedStr();
-		isOnMatchedFn && (transformedStr += newStr.substring(matchedRange[1] + 1)); // 将末尾的字符串补充上去
+		if (isOnMatchedFn) {
+			// 将末尾的字符串补充上去
+			const endSnippet = newStr.substring(matchedRange[1] + 1);
+			transformedStr += endSnippet;
+			strArr.push(endSnippet);
+		}
 		position.push(convertIndex(matchedRange));
 	}
-	return { position, indexes, transformedStr };
+	return {
+		position,
+		indexes,
+		str: transformedStr,
+		strArr: strArr.filter(Boolean)
+	};
 }
