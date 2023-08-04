@@ -5,15 +5,15 @@
  */
 var typescript = require('rollup-plugin-typescript2');
 const getCompiler = (
-  opt = {
-    // objectHashIgnoreUnknownHack: true,
-    // clean: true,
-    tsconfigOverride: {
-      compilerOptions: {
-        module: 'ES2015'
-      }
-    }
-  }
+	opt = {
+		// objectHashIgnoreUnknownHack: true,
+		// clean: true,
+		tsconfigOverride: {
+			compilerOptions: {
+				module: 'ES2015'
+			}
+		}
+	}
 ) => typescript(opt);
 exports.getCompiler = getCompiler;
 
@@ -29,8 +29,8 @@ exports.banner = `/**
 `;
 
 const compilePath = (exports.compilePath = {
-  packageName: 'sdm',
-  input: 'src/index.ts',
-  output: suffix => `dist/sdm.${suffix}.js`
+	packageName: 'sdm2',
+	input: 'src/index.ts',
+	output: suffix => `dist/sdm2.${suffix}.js`
 });
 exports.external = compilePath.external || [];
