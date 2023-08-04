@@ -29,7 +29,7 @@ describe('Match efficiency test', () => {
 		console.timeEnd(number5000 + strIgnore);
 	});
 
-	test(number10000, async () => {
+	test(number10000, () => {
 		console.time(number10000);
 		(testData10000 as string[]).filter(item => match(item, matching));
 		console.timeEnd(number10000);
