@@ -2,7 +2,7 @@ name: 🐛 Report bugs in English
 description: Use English to report bugs
 labels: ['bug:need-confirm']
 body:
-  -type: markdown
+  - type: markdown
     attributes:
       value: |
         👋🏻👋🏻👋🏻Hi, thanks very much for your support to sdm2, it is really important!
@@ -12,7 +12,7 @@ body:
         - Make sure you have searched for [historical issues](https://github.com/JOU-amjs/sdm2/issues) and found no similar issues.
         - If you have a question or doubt, you can move to [Discussions](https://github.com/JOU-amjs/sdm2/discussions) to post, which will help maintainers manage sdm2 community better.
 
-  -type: textarea
+  - type: textarea
     id: description
     attributes:
       label: Please describe the bug in detail
@@ -20,13 +20,13 @@ body:
     validations:
       required: true
 
-  -type: input
+  - type: input
     id: reproduce
     attributes:
       label: Reproduce link
       description: This helps solvers solve problems faster, you can create a repository link on [codesandbox](https://codesandbox.io), [stackBlitz](https://stackblitz.com) or GitHub. Please do not fill in invalid links.
 
-  -type: textarea
+  - type: textarea
     id: reproduce-steps
     attributes:
       label: steps to reproduce
@@ -36,13 +36,13 @@ body:
     validations:
       required: true
 
-  -type: textarea
+  - type: textarea
     id: expect
     attributes:
       label: expected performance
       description: Please use clear and concise language to describe what effect you want to achieve
 
-  -type: input
+  - type: input
     id: version
     attributes:
       label: sdm2 version
@@ -51,13 +51,13 @@ body:
     validations:
       required: true
 
-  -type: input
+  - type: input
     id: env
     attributes:
       label: Reproduce environment
       description: In what environment is it reproduced, please provide the version number for nodejs, and for the browser, please provide the browser manufacturer and version number
 
-  -type: textarea
+  - type: textarea
     id: remark
     attributes:
       label: additional instructions
