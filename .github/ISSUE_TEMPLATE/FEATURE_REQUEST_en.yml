@@ -2,7 +2,7 @@ name: 🚀 new feature proposal
 description: New features or optimization proposals for sdm2
 labels: ['feature-request']
 body:
-  -type: markdown
+  - type: markdown
     attributes:
       value: |
         👋🏻👋🏻👋🏻Hi, thank you very much for your support to sdm2, it is really important!
@@ -11,14 +11,14 @@ body:
         - Confirm that it cannot be implemented through the API at present, you can first look for available parameters in [README.md](https://github.com/JOU-amjs/sdm2/blob/main/README.md), generally speaking, we Add new features only considering problems that cannot be easily solved by existing APIs.
         - Confirm that no duplicate content is found in [Historical issues](https://github.com/JOU-amjs/sdm2/issues) or [Discussion](https://github.com/JOU-amjs/sdm2/discussions).
 
-  -type: textarea
+  - type: textarea
     id: description
     attributes:
       label: What problem does the new feature need to solve?
     validations:
       required: true
 
-  -type: textarea
+  - type: textarea
     id: api
     attributes:
       label: How should the new features you expect be presented?
