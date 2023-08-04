@@ -1,22 +1,25 @@
-# [sdm2](https://github.com/JOU-amjs/msd)
+<p align="center">
+  <img width="200px" src="https://github.com/JOU-amjs/sdm2/assets/29848971/0eb41c8d-7021-4128-bba8-13ad08e6c696" />
+</p>
+
+<p align="center"><b>一个高性能的字符串非连续搜索函数库</b></p>
+
+<p align="center">English | <a href="./README.zh-CN.md">📑中文</a></p>
 
 [![npm](https://img.shields.io/npm/v/sdm2)](https://www.npmjs.com/package/sdm2)
-![size](https://img.shields.io/bundlephobia/min/sdm2)
+[![minzipped size](https://badgen.net/bundlephobia/minzip/sdm2)](https://bundlephobia.com/package/sdm2)
 [![Coverage Status](https://coveralls.io/repos/github/JOU-amjs/sdm2/badge.svg)](https://coveralls.io/github/JOU-amjs/sdm2)
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
-### 一个高性能的字符串非连续搜索函数库
+## 🚀 特性
 
-[English Document](./README.md)
-
-## **特性**
-
+- 使用简单
 - 高性能
-- 多次连续调用性能优化
+- 小于 1kb
 - 支持 TypeScript
 
-## 通过`npm`或`yarn`安装
+## 安装
 
 ```bash
 # via npm
@@ -42,7 +45,7 @@ Browser
 <script src="https://unpkg.com/sdm2"></script>
 ```
 
-## **用法**
+## 用法
 
 也许你会用它在路径搜索，树型控件选项搜索，checkbox 项搜索，或其他一些本地数据的非连续字符串搜索，它都可以满足你，请参见下面的示例。
 
@@ -125,7 +128,7 @@ const ret = filterMap(matchedStrings, 'shojsx', (matchedInfo, index) => matchedI
  */
 ```
 
-### **性能**
+## 性能
 
 ---
 
@@ -141,10 +144,10 @@ const ret = filterMap(matchedStrings, 'shojsx', (matchedInfo, index) => matchedI
 | 10000 | 5000 | ✅ | 101ms |
 | 10000 | 5000 | ❌ | 84ms |
 
-### LICENSE MIT
+## 欢迎提交问题
 
-Copyright (c) 2021 JOU. Copyright of the Typescript bindings are respective of each contributor listed in the definition file.
+如果您在使用 sdm2 时遇到困难，无论是 bug，还是新功能，都可以 [点此提交](https://github.com/JOU-amjs/sdm2/issues)
 
-### **提交一个问题**
+## LICENSE
 
-- [点此提交](https://github.com/JOU-amjs/sdm2/issues)
+[MIT](https://en.wikipedia.org/wiki/MIT_License)

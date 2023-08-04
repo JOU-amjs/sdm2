@@ -1,22 +1,25 @@
-# [sdm2](https://github.com/JOU-amjs/msd)
+<p align="center">
+   <img width="200px" src="https://github.com/JOU-amjs/sdm2/assets/29848971/0eb41c8d-7021-4128-bba8-13ad08e6c696" />
+</p>
+
+<p align="center"><b>A high-performance string non-continuous search function library</b></p>
+
+<p align="center">English | <a href="./README.zh-CN.md">📑中文</a></p>
 
 [![npm](https://img.shields.io/npm/v/sdm2)](https://www.npmjs.com/package/sdm2)
-![size](https://img.shields.io/bundlephobia/min/sdm2)
+[![minzipped size](https://badgen.net/bundlephobia/minzip/sdm2)](https://bundlephobia.com/package/sdm2)
 [![Coverage Status](https://coveralls.io/repos/github/JOU-amjs/sdm2/badge.svg)](https://coveralls.io/github/JOU-amjs/sdm2)
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
-### A high-performance string non-continuous search function library
+## 🚀 Features
 
-[English Document](./README.md)
-
-## **Features**
-
+- Simple to use
 - high performance
-- Multiple consecutive call performance optimization
+- less than 1kb
 - Support TypeScript
 
-## Install via `npm` or `yarn`
+## Install
 
 ```bash
 # via npm
@@ -42,7 +45,7 @@ Browser
 <script src="https://unpkg.com/sdm2"></script>
 ```
 
-## **Usage**
+## Usage
 
 Maybe you will use it in path search, tree control option search, checkbox item search, or some other non-contiguous string search of local data, it can satisfy you, please see the example below.
 
@@ -125,7 +128,7 @@ const ret = filterMap(matchedStrings, 'shojsx', (matchedInfo, index) => matchedI
  */
 ```
 
-## **Performance**
+## Performance
 
 ---
 
@@ -141,10 +144,10 @@ The key string is a 50-digit random string
 | 10000 | 5000 | ✅ | 101ms |
 | 10000 | 5000 | ❌ | 84ms |
 
-## **SUBMIT A QUESTION**
+## welcome to submit questions
 
-- [Click here to submit](https://github.com/JOU-amjs/sdm2/issues)
+If you encounter difficulties when using sdm2, whether it is a bug or a new function, you can [click here to submit](https://github.com/JOU-amjs/sdm2/issues)
 
-## LICENSE MIT
+## LICENSE
 
-Copyright (c) 2021 JOU. Copyright of the Typescript bindings are respective of each contributor listed in the definition file.
+[MIT](https://en.wikipedia.org/wiki/MIT_License)
