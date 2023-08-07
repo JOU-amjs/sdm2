@@ -26,8 +26,8 @@ export default function matchWithString<T extends string | Record<any, any>>(
 		indexes: number[] = [],
 		matchingStr = newStr as string,
 		// 如果不需要转换匹配字符串则默认为被查找的字符串，否则会通过appendTransformedStr一步步追加内容上去
-		transformedStr = isOnMatchedFn ? '' : matchingStr;
-	const strArr = isOnMatchedFn ? [] : [matchingStr];
+		transformedStr = isOnMatchedFn && matcher ? '' : matchingStr;
+	const strArr = isOnMatchedFn && matcher ? [] : [matchingStr];
 
 	if (matcher) {
 		if (ignoreCase) {
@@ -88,9 +88,11 @@ export default function matchWithString<T extends string | Record<any, any>>(
 
 	return {
 		isMatched,
-		position,
-		indexes,
-		str: transformedStr,
-		strArr: strArr.filter(Boolean)
+		detail: {
+			position,
+			indexes,
+			str: transformedStr,
+			strArr: strArr.filter(Boolean)
+		}
 	};
 }

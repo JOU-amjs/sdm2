@@ -20,7 +20,7 @@ export function match<T extends string | Record<any, any>>(
 	return matched.isMatched
 		? {
 				origin: originalStr,
-				...matched
+				...matched.detail
 		  }
 		: null;
 }
