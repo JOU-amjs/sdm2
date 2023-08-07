@@ -122,8 +122,13 @@ describe('string discontinuous match', () => {
 	});
 
 	test('match empty string', () => {
-		const res = match('r8poojlusvpopw1N8bkl48r81vnelhdaqust2rn4O6pc8n2ven60wjcr', '');
-		expect(res).toBeNull();
+		const matchStrCased = '';
+		const res1 = match(matchableStr, matchStrCased);
+		expect(res1?.position).toStrictEqual([]);
+		expect(res1?.indexes).toStrictEqual([]);
+		expect(res1?.origin).toBe(matchableStr);
+		expect(res1?.str).toBe(matchableStr);
+		expect(res1?.strArr).toStrictEqual([matchableStr]);
 	});
 	test('throws error when pass wrong param', () => {
 		expect(() => {

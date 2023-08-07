@@ -17,7 +17,7 @@ export function match<T extends string | Record<any, any>>(
 ) {
 	myAssert(isString(matcher), 'matcher is not a string');
 	const matched = matchWithString(originalStr, matcher, config);
-	return matched.position.length
+	return matched.isMatched
 		? {
 				origin: originalStr,
 				...matched

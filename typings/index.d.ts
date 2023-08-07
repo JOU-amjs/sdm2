@@ -17,10 +17,10 @@ export function match<T extends string | Record<any, any>>(
 	str: T,
 	matching: string,
 	config?: MatchingConfig<T>
-): Matched | null;
+): Matched<T> | null;
 
 interface FilterMapMatchingConfig<T, R> extends MatchingConfig<T> {
-	onMap: (value: Matched, index: number) => R;
+	onMap: (value: Matched<T>, index: number) => R;
 }
 export function filterMap<T extends string | Record<any, any>, R>(
 	array: T[],
