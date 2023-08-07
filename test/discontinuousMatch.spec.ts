@@ -122,13 +122,21 @@ describe('string discontinuous match', () => {
 	});
 
 	test('match empty string', () => {
-		const matchStrCased = '';
-		const res1 = match(matchableStr, matchStrCased);
+		const res1 = match(matchableStr, '');
 		expect(res1?.position).toStrictEqual([]);
 		expect(res1?.indexes).toStrictEqual([]);
 		expect(res1?.origin).toBe(matchableStr);
 		expect(res1?.str).toBe(matchableStr);
 		expect(res1?.strArr).toStrictEqual([matchableStr]);
+
+		const res2 = match(matchableStr, '', {
+			onMatched: matchedStr => `<${matchedStr}>`
+		});
+		expect(res2?.position).toStrictEqual([]);
+		expect(res2?.indexes).toStrictEqual([]);
+		expect(res2?.origin).toBe(matchableStr);
+		expect(res2?.str).toBe(matchableStr);
+		expect(res2?.strArr).toStrictEqual([matchableStr]);
 	});
 	test('throws error when pass wrong param', () => {
 		expect(() => {
