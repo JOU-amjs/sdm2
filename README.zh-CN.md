@@ -12,6 +12,22 @@
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
+## 示例
+
+#### 下拉菜单选择
+
+![1](https://github.com/JOU-amjs/sdm2/assets/29848971/f7f5fd21-d49b-45b6-94d4-e94c25326f0c)
+
+#### 树形菜单选择
+
+![2](https://github.com/JOU-amjs/sdm2/assets/29848971/7f46ad80-f18e-4d61-86f5-85fb908d0dd8)
+
+#### 侧边菜单栏
+
+![3](https://github.com/JOU-amjs/sdm2/assets/29848971/85e3a46a-130c-4f9a-89c9-5a62e0b069f8)
+
+完整示例 [请点此查看](https://codesandbox.io/p/sandbox/github/JOU-amjs/sdm2-example/tree/main?file=%2Fsrc%2FApp.vue)
+
 ## 🚀 特性
 
 - 易于使用
